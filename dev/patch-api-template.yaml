@@ -20,6 +20,8 @@ spec:
         app: AspNetCoreWebApi6
         deployment: AspNetCoreWebApi6
     spec:
+      imagePullSecrets:
+      - name: acr-creds
       containers:
         - name: AspNetCoreWebApi6
 
