@@ -3,7 +3,7 @@ apiVersion: apps/v1
 metadata:
   name: AspNetCoreWebApi6
   labels:
-    app: aspnet-2
+    app: AspNetCoreWebApi6
     app.kubernetes.io/component: AspNetCoreWebApi6
     app.kubernetes.io/instance: AspNetCoreWebApi6
     app.kubernetes.io/name: AspNetCoreWebApi6
