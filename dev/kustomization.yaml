@@ -1,0 +1,10 @@
+resources:
+ - ../base/
+ 
+generatorOptions:
+ disableNameSuffixHash: true
+
+patchesStrategicMerge:
+ - patch-fe.yaml
+ - patch-api.yaml
+

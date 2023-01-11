@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/part-of: permit-microservices
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        deployment: frontend
+    spec:
+      containers:
+      - env:
+        - name: TESTPERMIT_MICROSERVICES_LOG_FOLDER_PATH
+          value: /usr/log
+        - name: TESTPERMIT_MICROSERVICES_API_URL
+          valueFrom:
+            configMapKeyRef:
+              key: testpermitmicroservicesapiurl
+              name: testpermit-microservices-config
+        image: image-registry.openshift-image-registry.svc:5000/dlh-dev/permit-frontend@sha256:11be49b03a445fcea0922a92ffbfe81ea8bfac99019c52dcbb6b23535070d418
+        name: frontend
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /usr/log
+          name: fe-storage
+      serviceAccountName: issues
+      volumes:
+      - name: fe-storage
+        persistentVolumeClaim:
+          claimName: fe-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: testpermit-api
+    app.kubernetes.io/component: testpermit-api
+    app.kubernetes.io/instance: testpermit-api
+    app.kubernetes.io/name: testpermit-api
+    app.kubernetes.io/part-of: permit-microservices
+  name: testpermit-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testpermit-api
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-config: secret/data/issues/config
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{- with secret "secret/data/issues/config" -}}
+          databaseuser="{{ .Data.data.dbuser }}"
+          databasepassword="{{ .Data.data.dbpwd }}"
+          {{- end -}}
+        vault.hashicorp.com/role: issues
+      labels:
+        app: testpermit-api
+        deployment: testpermit-api
+    spec:
+      containers:
+      - env:
+        - name: DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: databasehost
+              name: testpermit-microservices-config
+        - name: DATABASE_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: databasename
+              name: testpermit-microservices-config
+        - name: VAULT_PSQL_PROPERTIES
+          value: /vault/secrets/config
+        image: image-registry.openshift-image-registry.svc:5000/dlh-dev/permit-api@sha256:2d1f6fbc5847e1a7914c4cdb1599a398d3cbc45bb2c05d5c67c4979cf7166792
+        name: testpermit-api
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      serviceAccountName: issues

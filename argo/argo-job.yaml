@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: testpermit-apps
+spec:
+  destination:
+    namespace: dlh-dev
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: ./dev
+    repoURL: 'https://github.com/vishwanath-r-puranik/moves-dlh-aspnet-gitops.git'
+    targetRevision: HEAD 
+
