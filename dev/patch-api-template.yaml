@@ -1,28 +1,28 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: AspNetCoreWebApi6
+  name: aspnetcorewebapi6
   labels:
-    app: AspNetCoreWebApi6
-    app.kubernetes.io/component: AspNetCoreWebApi6
-    app.kubernetes.io/instance: AspNetCoreWebApi6
-    app.kubernetes.io/name: AspNetCoreWebApi6
-    app.kubernetes.io/part-of: AspNetCoreWebApi6
+    app: aspnetcorewebapi6
+    app.kubernetes.io/component: aspnetcorewebapi6
+    app.kubernetes.io/instance: aspnetcorewebapi6
+    app.kubernetes.io/name: aspnetcorewebapi6
+    app.kubernetes.io/part-of: aspnetcorewebapi6
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: AspNetCoreWebApi6
+      app: aspnetcorewebapi6
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: AspNetCoreWebApi6
-        deployment: AspNetCoreWebApi6
+        app: aspnetcorewebapi6
+        deployment: aspnetcorewebapi6
     spec:
       imagePullSecrets:
       - name: acr-creds
       containers:
-        - name: AspNetCoreWebApi6
+        - name: aspnetcorewebapi6
 
-          image: goaaroregistry.azurecr.io/024087d6-4aa7-4a52-90ec-0db8ffe1249e/dlh-dev/AspNetCoreWebApi6:latest
+          image: goaaroregistry.azurecr.io/024087d6-4aa7-4a52-90ec-0db8ffe1249e/dlh-dev/aspnetcorewebapi6:latest
