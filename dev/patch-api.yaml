@@ -25,4 +25,4 @@ spec:
       containers:
         - name: aspnetcorewebapi6
 
-          image: goaaroregistry.azurecr.io/024087d6-4aa7-4a52-90ec-0db8ffe1249e/dlh-dev/aspnetcorewebapi6:17afdcdf8d16f0c1b54b34a38479374ffbed3141
+          image: goaaroregistry.azurecr.io/024087d6-4aa7-4a52-90ec-0db8ffe1249e/dlh-dev/aspnetcorewebapi6:86dde839a3babbb4d6871e340152f42750d0f3e8
